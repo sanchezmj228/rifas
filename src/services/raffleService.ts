@@ -172,3 +172,58 @@ const getTakenNumbers = async (raffleId: string): Promise<number[]> => {
 
     return Array.from(takenSet);
 };
+
+export const getDashboardMetrics = async () => {
+    // 1. Active Raffles
+    const now = new Date().toISOString();
+    const { count: activeRafflesCount, error: activeRafflesError } = await supabase
+        .from('raffles')
+        .select('*', { count: 'exact', head: true })
+        .gt('end_date', now);
+
+    if (activeRafflesError) console.error('Error fetching active raffles count:', activeRafflesError);
+
+    // 2. Pending Tickets (Global)
+    const { count: pendingTicketsCount, error: pendingTicketsError } = await supabase
+        .from('tickets')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+
+    if (pendingTicketsError) console.error('Error fetching pending tickets count:', pendingTicketsError);
+
+    // 3. Today's Sales (Count and Amount)
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayISO = todayStart.toISOString();
+
+    const { data: todaysTickets, error: todaysSalesError } = await supabase
+        .from('tickets')
+        .select('total_amount')
+        .eq('status', 'paid')
+        .gte('created_at', todayISO);
+
+    if (todaysSalesError) console.error('Error fetching today sales:', todaysSalesError);
+
+    const todaysSalesCount = todaysTickets?.length || 0;
+    const todaysSalesAmount = todaysTickets?.reduce((sum, ticket) => sum + ticket.total_amount, 0) || 0;
+
+    // 4. Daily Revenue (BCV Only)
+    // Reusing the date filter from Today's Sales
+    const { data: dailyRevenueData, error: revenueError } = await supabase
+        .from('tickets')
+        .select('total_amount')
+        .eq('status', 'paid')
+        .gte('created_at', todayISO);
+
+    if (revenueError) console.error('Error fetching daily revenue:', revenueError);
+
+    const dailyRevenueAmount = dailyRevenueData?.reduce((sum, ticket) => sum + ticket.total_amount, 0) || 0;
+
+    return {
+        activeRaffles: activeRafflesCount || 0,
+        pendingTickets: pendingTicketsCount || 0,
+        todaysSalesCount,
+        todaysSalesAmount,
+        totalRevenue: { 'BCV': dailyRevenueAmount } // Kept object structure for compatibility but only returns BCV day total
+    };
+};

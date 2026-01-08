@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getRaffles, getPendingTicketCount } from '@/services/raffleService';
+import DashboardStats from '@/components/dashboard/DashboardStats';
 
 export const revalidate = 0; // Always fresh data for admin
 
@@ -21,7 +22,19 @@ export default async function DashboardPage() {
                     <h1 className="text-3xl font-display font-bold text-white mb-2">Panel de Control</h1>
                     <p className="text-foreground/60">Gestiona tus rifas y tickets desde aquí</p>
                 </div>
+                <Link
+                    href="/dashboard/raffle/create"
+                    className="btn-casino px-6 py-2 rounded-lg font-bold flex items-center gap-2"
+                >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Crear Rifa</span>
+                </Link>
             </div>
+
+            {/* Dashboard Statistics */}
+            <DashboardStats />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {rafflesWithStats.map((raffle) => {
