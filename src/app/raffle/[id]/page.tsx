@@ -308,17 +308,30 @@ export default function RaffleDetailPage({ params }: PageProps) {
                                 </div>
                             </div>
 
-                            {/* End Date */}
-                            <div className="flex items-center gap-2 text-foreground/50 text-sm">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span>Sorteo: {new Date(raffle.endDate).toLocaleDateString('es-MX', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}</span>
+                            {/* Draw Date - Prominent Display */}
+                            <div className="bg-linear-to-r from-gold/20 via-gold/10 to-transparent rounded-xl p-4 border border-gold/40">
+                                <div className="flex items-center gap-4">
+                                    {/* Calendar Icon */}
+                                    <div className="w-14 h-14 rounded-xl bg-gold/20 flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    {/* Date Info */}
+                                    <div>
+                                        <p className="text-gold/70 text-xs uppercase tracking-wider font-medium mb-1">
+                                            📅 Fecha del Sorteo
+                                        </p>
+                                        <p className="text-white text-lg md:text-xl font-bold capitalize">
+                                            {new Date(raffle.endDate).toLocaleDateString('es-MX', {
+                                                weekday: 'long',
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
+                                            })}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

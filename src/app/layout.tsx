@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ContactFloatingButton from "@/components/ContactFloatingButton";
 
 export const metadata: Metadata = {
   title: "RifasDoradas - Tu Suerte Comienza Aquí",
@@ -16,12 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="casino-bg antialiased min-h-screen flex flex-col">
+      <body className="casino-bg antialiased min-h-screen flex flex-col relative">
         <Header />
         <main className="flex-1 pt-16 md:pt-20">
           {children}
         </main>
         <Footer />
+        <ContactFloatingButton />
       </body>
     </html>
   );

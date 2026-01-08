@@ -47,9 +47,15 @@ export default function RaffleCard({ raffle }: RaffleCardProps) {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-foreground/60 text-sm mb-4 line-clamp-2">
+                    <p className="text-foreground/60 text-sm mb-3 line-clamp-2">
                         {raffle.description}
                     </p>
+
+                    {/* Date */}
+                    <div className="flex items-center gap-2 text-sm mb-4 text-gold/80">
+                        <span>📅</span>
+                        <span><strong>Sorteo:</strong> {new Date(raffle.endDate).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                    </div>
 
                     {/* Progress Bar */}
                     <div className="mb-4">

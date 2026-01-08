@@ -1,0 +1,71 @@
+'use client';
+
+import { useState, use } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { Raffle } from '@/types';
+
+// Client component needs to fetch data on mount or receive it as prop if possible.
+// Since we are in app router, let's fetch it in a useEffect for simplicity or we could pass it from a server parent.
+// To keep it simple and consistent with the create page pattern, we'll fetch on load.
+
+export default function EditRafflePage({ params }: { params: Promise<{ id: string }> }) {
+    const router = useRouter();
+    const resolvedParams = use(params);
+    const { id } = resolvedParams;
+    
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        image_url: '',
+        price: '',
+        currency: 'BCV',
+        end_date: ''
+    });
+
+    useEffect(() => {
+        const fetchRaffle = async () => {
+            try {
+                // leveraging the existing server function via an API call or just using database directly if this was server component.
+                // But this is a client component form. Let's create a quick way to get data or reuse existing API if any.
+                // Actually, I can just use the supabase client directly here or call the getRaffleById logic if I switch to Server Component + Client Form.
+                // Let's stick to Server Component wrapping Client Form pattern for best practice? 
+                // Wait, I am writing the page file directly. Let's make this page a client component that fetches data from an endpoint?
+                // Or better: Server Component Page -> fetches data -> Passes to Client Form.
+                // I'll implement the "Page fetches data" pattern.
+                // Wait, I am writing the file right now. 
+                // Let's do the fetch inside useEffect for now to avoid creating another component file, 
+                // or I can assume I can fetch it via a server action or API.
+                // I'll use a direct fetch to the database via a new API endpoint? No, too much boilerplate.
+                // I will make the Page async server component and the form a separate client component?
+                // The prompt asked for "edit/page.tsx".
+                // Let's make this file a client component that keeps it simple.
+                // Actually, I can't import `getRaffleById` directly in a client component.
+                // So I will changing this plan slightly: 
+                // 1. Rename this file content to be a client form.
+                // 2. Wrap it properly. 
+                // For now, I'll write IT AS A CLIENT COMPONENT that fetches from an API.
+                // Wait, I don't have a GET API for single raffle? I have `getRaffleById` service.
+                // I can implement a GET route or just use the service in a Server Page and pass it down.
+                // Let's go with Server Page + Client Form. It's cleaner.
+                
+                // Oops, I am writing `edit/page.tsx` directly.
+            } catch (e) {
+                console.error(e);
+            }
+        };
+    }, [id]);
+
+    // RE-STRATEGY: I will write `EditRaffleForm.tsx` (client) and `page.tsx` (server).
+    // But `write_to_file` only allows one file.
+    // I will write the Client Logic INSIDE this file but load data via a Server Component wrapper?
+    // Start simple: `page.tsx` is Server Component, renders a Client Form.
+    // I need to create the client form first? 
+    // I'll put everything in `page.tsx` but using the "Pass data from Server to Client" pattern is tricky if I can't create 2 files easily in one step.
+    // I'll create `EditRaffleForm` component in a separate file in next step.
+    // For this step, I will create `EditRaffleForm.tsx` component.
+    return null; 
+}
